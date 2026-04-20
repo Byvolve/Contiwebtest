@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aftermarket Confrontatiematrix — Contiweb</title>
+<style>
+:root{
+  --font-sans: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f4f4f5;
+  --color-background-tertiary: #e4e4e7;
+  --color-text-primary: #18181b;
+  --color-text-secondary: #52525b;
+  --color-text-tertiary: #a1a1aa;
+  --color-border-primary: #3f3f46;
+  --color-border-secondary: #d4d4d8;
+  --color-border-tertiary: #e4e4e7;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --color-background-primary: #18181b;
+    --color-background-secondary: #27272a;
+    --color-background-tertiary: #3f3f46;
+    --color-text-primary: #f4f4f5;
+    --color-text-secondary: #a1a1aa;
+    --color-text-tertiary: #71717a;
+    --color-border-primary: #a1a1aa;
+    --color-border-secondary: #3f3f46;
+    --color-border-tertiary: #27272a;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--color-background-primary);color:var(--color-text-primary);font-family:var(--font-sans);min-height:100vh}
+.page{max-width:1100px;margin:0 auto;padding:24px 20px 48px}
+.page-header{margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--color-border-tertiary)}
+.page-title{font-size:18px;font-weight:700;color:var(--color-text-primary);margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--color-text-tertiary)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">Aftermarket Confrontatiematrix — Contiweb</div>
+    <div class="page-sub">Verandermanagementproject · Aftermarket-afdeling · Machinedata &amp; klantwaarde</div>
+  </div>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.w{padding:1rem 0;font-family:var(--font-sans)}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;background:var(--color-background-secondary);padding:4px;border-radius:var(--border-radius-md);margin-bottom:1.5rem}
+.tab{font-size:14px;font-weight:600;padding:8px 18px;border-radius:6px;cursor:pointer;color:var(--color-text-secondary);border:none;background:transparent;transition:all 0.15s}
+.tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border:1px solid var(--color-border-secondary)}
+.tab:hover:not(.active){color:var(--color-text-primary);opacity:0.75}
+.view{display:none}.view.active{display:block}
+
+/* Legend */
+.leg{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)}
+.li{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--color-text-secondary)}
+.ld{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+
+/* Score filter bar */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.filter-label{font-size:12px;font-weight:600;color:var(--color-text-tertiary)}
+.flt-btn{font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;border:1px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;transition:all 0.15s}
+.flt-btn:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
+.flt-btn.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary)}
+.flt-btn.flt-spp.active{background:#18A374;color:#fff;border-color:#18A374}
+.flt-btn.flt-smm.active{background:#DC3C3C;color:#fff;border-color:#DC3C3C}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+.tbl th,.tbl td{border:1px solid var(--color-border-tertiary);padding:0}
+.corner{background:var(--color-background-secondary);width:158px}
+.eh{font-size:12px;font-weight:700;padding:10px 6px;text-align:center;vertical-align:middle;line-height:1.3;transition:filter 0.1s}
+.eh-o{background:#D6EAFA;color:#0A3D72}
+.eh-t{background:#FAE0E0;color:#8B1A1A}
+.ih{font-size:12px;font-weight:700;padding:10px 10px;text-align:left;vertical-align:middle;line-height:1.3;width:158px;transition:filter 0.1s}
+.ih-s{background:#D4F1E6;color:#064532}
+.ih-w{background:#FDE8C8;color:#5C2E00}
+
+/* Cells */
+.cell{cursor:pointer;text-align:center;vertical-align:middle;height:52px;font-size:14px;font-weight:700;transition:filter 0.12s,opacity 0.12s}
+.cell:hover{filter:brightness(0.86)}
+.cell.sel{outline:3px solid var(--color-border-primary);outline-offset:-3px}
+.cell.cell-focus{box-shadow:inset 0 0 0 3px rgba(0,0,0,0.28)}
+
+/* Row/column focus highlight */
+.ih.row-hl{filter:brightness(0.78)!important}
+.eh.col-hl{filter:brightness(0.78)!important}
+
+/* Filter dimming */
+.tbl.filter-spp .cell:not(.spp){opacity:0.18}
+.tbl.filter-smm .cell:not(.smm){opacity:0.18}
+
+/* Cell colours — slightly more saturated for screen share */
+.spp{background:#18A374;color:#02291E}
+.sp{background:#7DD9BC;color:#063D2B}
+.sn0{background:var(--color-background-secondary);color:var(--color-text-tertiary);font-weight:500}
+.sm{background:#F9BC5E;color:#3A1D00}
+.smm{background:#DC3C3C;color:#3E0808}
+
+/* Pulse on click */
+@keyframes cellPulse{
+  0%{box-shadow:0 0 0 0 rgba(0,0,0,0.28)}
+  70%{box-shadow:0 0 0 10px rgba(0,0,0,0)}
+  100%{box-shadow:0 0 0 0 rgba(0,0,0,0)}
+}
+.cell.pulse{animation:cellPulse 0.5s ease-out forwards}
+
+/* Detail panel */
+.detail{margin-top:16px;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:18px 20px;min-height:84px;box-shadow:0 2px 8px rgba(0,0,0,0.07)}
+.dh{font-size:14px;color:var(--color-text-tertiary);font-style:italic}
+.dtag{display:inline-block;font-size:11px;font-weight:700;padding:4px 12px;border-radius:4px;margin-bottom:10px;letter-spacing:0.3px}
+.tag-so{background:#D4F1E6;color:#064532}
+.tag-wo{background:#D6EAFA;color:#0A3D72}
+.tag-st{background:#FDE8C8;color:#5C2E00}
+.tag-wt{background:#FAE0E0;color:#8B1A1A}
+.dt{font-size:15px;font-weight:700;color:var(--color-text-primary);margin-bottom:6px}
+.db{font-size:14px;color:var(--color-text-secondary);line-height:1.65}
+
+/* Slide-in */
+@keyframes slideUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.detail.revealed{animation:slideUp 0.2s ease-out}
+
+/* SWOT grid */
+.swot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.swot-card{background:var(--color-background-primary);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px 18px;transition:box-shadow 0.2s,transform 0.2s}
+.swot-card:hover{box-shadow:0 5px 18px rgba(0,0,0,0.10);transform:translateY(-2px)}
+.swot-s{border-left:4px solid #18A374}
+.swot-w{border-left:4px solid #F0A030}
+.swot-o{border-left:4px solid #4A9FD4}
+.swot-t{border-left:4px solid #DC3C3C}
+.swot-label{font-size:11px;font-weight:700;margin-bottom:12px;padding:4px 10px;border-radius:4px;display:inline-block;letter-spacing:0.3px}
+.sl-s{background:#D4F1E6;color:#064532}
+.sl-w{background:#FDE8C8;color:#5C2E00}
+.sl-o{background:#D6EAFA;color:#0A3D72}
+.sl-t{background:#FAE0E0;color:#8B1A1A}
+.swot-item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--color-border-tertiary)}
+.swot-item:first-of-type{border-top:none;padding-top:0}
+.si-num{font-size:12px;font-weight:700;color:var(--color-text-tertiary);min-width:18px;padding-top:2px}
+.si-main{font-size:14px;font-weight:600;color:var(--color-text-primary);line-height:1.4;margin-bottom:3px}
+.si-sub{font-size:13px;color:var(--color-text-secondary);line-height:1.45}
+
+/* Key Issues */
+.ki-list{margin-top:4px;display:flex;flex-direction:column;gap:12px}
+.ki-row{background:var(--color-background-primary);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px 18px;display:flex;gap:16px;align-items:flex-start;transition:box-shadow 0.2s,transform 0.2s}
+.ki-row:hover{box-shadow:0 5px 18px rgba(0,0,0,0.10);transform:translateY(-2px)}
+.urg-c{border-top:4px solid #DC3C3C}
+.urg-u{border-top:4px solid #F9BC5E}
+.urg-s{border-top:4px solid #18A374}
+.ki-left{min-width:84px}
+.ki-nr{font-size:11px;font-weight:700;color:var(--color-text-tertiary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+.urg{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:0.2px}
+.uh{background:#FAE0E0;color:#8B1A1A}
+.um{background:#FDE8C8;color:#5C2E00}
+.ul{background:#D4F1E6;color:#064532}
+.ki-body{flex:1}
+.ki-title{font-size:15px;font-weight:700;color:var(--color-text-primary);margin-bottom:6px;line-height:1.4}
+.ki-desc{font-size:13px;color:var(--color-text-secondary);line-height:1.55;margin-bottom:8px}
+.ki-dv{font-size:11px;font-weight:500;color:var(--color-text-tertiary)}
+.ki-bar{height:5px;border-radius:3px;background:var(--color-border-tertiary);margin-bottom:8px}
+.ki-bf{height:5px;border-radius:3px}
+
+/* Responsive */
+@media(max-width:600px){.swot-grid{grid-template-columns:1fr}}
+
+/* Dark mode */
+@media(prefers-color-scheme:dark){
+  .eh-o{background:#042C53;color:#85B7EB}
+  .eh-t{background:#501313;color:#F09595}
+  .ih-s{background:#04342C;color:#9FE1CB}
+  .ih-w{background:#412402;color:#FAC775}
+  .spp{background:#085041;color:#9FE1CB}
+  .sp{background:#0F6E56;color:#E1F5EE}
+  .smm{background:#791F1F;color:#F7C1C1}
+  .sm{background:#633806;color:#FAEEDA}
+  .tag-so{background:#085041;color:#9FE1CB}
+  .tag-wo{background:#0C447C;color:#B5D4F4}
+  .tag-st{background:#633806;color:#FAC775}
+  .tag-wt{background:#791F1F;color:#F7C1C1}
+  .sl-s{background:#04342C;color:#9FE1CB}
+  .sl-w{background:#412402;color:#FAC775}
+  .sl-o{background:#042C53;color:#85B7EB}
+  .sl-t{background:#501313;color:#F09595}
+  .uh{background:#791F1F;color:#F7C1C1}
+  .um{background:#633806;color:#FAC775}
+  .ul{background:#085041;color:#9FE1CB}
+  .flt-btn.flt-spp.active{background:#085041;border-color:#085041}
+  .flt-btn.flt-smm.active{background:#791F1F;border-color:#791F1F}
+  .swot-s{border-left-color:#085041}
+  .swot-w{border-left-color:#854F0B}
+  .swot-o{border-left-color:#0C447C}
+  .swot-t{border-left-color:#791F1F}
+}
+</style>
+
+<div class="w">
+<div class="tabs">
+  <button class="tab active" onclick="sw('matrix',this)">Confrontatiematrix</button>
+  <button class="tab" onclick="sw('swot',this)">SWOT-overzicht</button>
+  <button class="tab" onclick="sw('ki',this)">Key issues</button>
+</div>
+
+<!-- ── Confrontatiematrix ─────────────────────────────────── -->
+<div id="view-matrix" class="view active">
+  <div class="leg">
+    <div class="li"><div class="ld spp"></div>Sterk positief</div>
+    <div class="li"><div class="ld sp"></div>Positief</div>
+    <div class="li"><div class="ld sn0" style="border:1px solid var(--color-border-tertiary)"></div>Neutraal</div>
+    <div class="li"><div class="ld sm"></div>Negatief</div>
+    <div class="li"><div class="ld smm"></div>Sterk negatief</div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="flt-btn flt-all active" onclick="setFilter('all',this)">Alles</button>
+    <button class="flt-btn flt-spp" onclick="setFilter('spp',this)">&#43;&#43; Sterk positief</button>
+    <button class="flt-btn flt-smm" onclick="setFilter('smm',this)">&#8722;&#8722; Sterk negatief</button>
+  </div>
+  <table class="tbl" id="matrix-tbl">
+    <thead>
+      <tr>
+        <th class="corner" style="width:158px"></th>
+        <th class="eh eh-o">O1<br>Uptime-eis klanten</th>
+        <th class="eh eh-o">O2<br>CSRD / CBAM</th>
+        <th class="eh eh-o">O3<br>AI-tools &amp; MCP</th>
+        <th class="eh eh-o">O4<br>MPA-automatisering</th>
+        <th class="eh eh-t">T1<br>Concurrenten</th>
+        <th class="eh eh-t">T2<br>Communicatie&shy;kloven</th>
+        <th class="eh eh-t">T3<br>AI-hallucinaties</th>
+        <th class="eh eh-t">T4<br>Cultuur&shy;weerstand markt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="ih ih-s">S1 &mdash; Rijke historische machinedata</td>
+        <td class="cell spp" data-k="S1O1">++</td>
+        <td class="cell spp" data-k="S1O2">++</td>
+        <td class="cell spp" data-k="S1O3">++</td>
+        <td class="cell spp" data-k="S1O4">++</td>
+        <td class="cell spp" data-k="S1T1">++</td>
+        <td class="cell sn0" data-k="S1T2">0</td>
+        <td class="cell sp"  data-k="S1T3">+</td>
+        <td class="cell sn0" data-k="S1T4">0</td>
+      </tr>
+      <tr>
+        <td class="ih ih-s">S2 &mdash; MCP-server operationeel</td>
+        <td class="cell spp" data-k="S2O1">++</td>
+        <td class="cell sp"  data-k="S2O2">+</td>
+        <td class="cell spp" data-k="S2O3">++</td>
+        <td class="cell spp" data-k="S2O4">++</td>
+        <td class="cell spp" data-k="S2T1">++</td>
+        <td class="cell spp" data-k="S2T2">++</td>
+        <td class="cell sm"  data-k="S2T3">-</td>
+        <td class="cell sn0" data-k="S2T4">0</td>
+      </tr>
+      <tr>
+        <td class="ih ih-s">S3 &mdash; Domeinkennis specialisten</td>
+        <td class="cell sp"  data-k="S3O1">+</td>
+        <td class="cell sn0" data-k="S3O2">0</td>
+        <td class="cell sp"  data-k="S3O3">+</td>
+        <td class="cell sp"  data-k="S3O4">+</td>
+        <td class="cell spp" data-k="S3T1">++</td>
+        <td class="cell sp"  data-k="S3T2">+</td>
+        <td class="cell spp" data-k="S3T3">++</td>
+        <td class="cell sp"  data-k="S3T4">+</td>
+      </tr>
+      <tr>
+        <td class="ih ih-s">S4 &mdash; AI-specialist met prototypes</td>
+        <td class="cell sp"  data-k="S4O1">+</td>
+        <td class="cell sp"  data-k="S4O2">+</td>
+        <td class="cell spp" data-k="S4O3">++</td>
+        <td class="cell spp" data-k="S4O4">++</td>
+        <td class="cell sp"  data-k="S4T1">+</td>
+        <td class="cell sp"  data-k="S4T2">+</td>
+        <td class="cell sp"  data-k="S4T3">+</td>
+        <td class="cell spp" data-k="S4T4">++</td>
+      </tr>
+      <tr>
+        <td class="ih ih-s">S5 &mdash; Extern bevestigde data-voorsprong</td>
+        <td class="cell spp" data-k="S5O1">++</td>
+        <td class="cell sp"  data-k="S5O2">+</td>
+        <td class="cell spp" data-k="S5O3">++</td>
+        <td class="cell spp" data-k="S5O4">++</td>
+        <td class="cell spp" data-k="S5T1">++</td>
+        <td class="cell sn0" data-k="S5T2">0</td>
+        <td class="cell sp"  data-k="S5T3">+</td>
+        <td class="cell sp"  data-k="S5T4">+</td>
+      </tr>
+      <tr>
+        <td class="ih ih-w">W1 &mdash; Data bereikt commercie niet</td>
+        <td class="cell smm" data-k="W1O1">--</td>
+        <td class="cell smm" data-k="W1O2">--</td>
+        <td class="cell sm"  data-k="W1O3">-</td>
+        <td class="cell sm"  data-k="W1O4">-</td>
+        <td class="cell smm" data-k="W1T1">--</td>
+        <td class="cell smm" data-k="W1T2">--</td>
+        <td class="cell sn0" data-k="W1T3">0</td>
+        <td class="cell sn0" data-k="W1T4">0</td>
+      </tr>
+      <tr>
+        <td class="ih ih-w">W2 &mdash; MPA-proces handmatig (30-35%)</td>
+        <td class="cell smm" data-k="W2O1">--</td>
+        <td class="cell sm"  data-k="W2O2">-</td>
+        <td class="cell sm"  data-k="W2O3">-</td>
+        <td class="cell spp" data-k="W2O4">++</td>
+        <td class="cell sm"  data-k="W2T1">-</td>
+        <td class="cell sm"  data-k="W2T2">-</td>
+        <td class="cell sn0" data-k="W2T3">0</td>
+        <td class="cell sn0" data-k="W2T4">0</td>
+      </tr>
+      <tr>
+        <td class="ih ih-w">W3 &mdash; Cultuurbarri&egrave;re AI-adoptie</td>
+        <td class="cell sm"  data-k="W3O1">-</td>
+        <td class="cell sn0" data-k="W3O2">0</td>
+        <td class="cell smm" data-k="W3O3">--</td>
+        <td class="cell smm" data-k="W3O4">--</td>
+        <td class="cell smm" data-k="W3T1">--</td>
+        <td class="cell sm"  data-k="W3T2">-</td>
+        <td class="cell smm" data-k="W3T3">--</td>
+        <td class="cell smm" data-k="W3T4">--</td>
+      </tr>
+      <tr>
+        <td class="ih ih-w">W4 &mdash; SAP-datakwaliteit onvoldoende</td>
+        <td class="cell sm"  data-k="W4O1">-</td>
+        <td class="cell sm"  data-k="W4O2">-</td>
+        <td class="cell smm" data-k="W4O3">--</td>
+        <td class="cell sm"  data-k="W4O4">-</td>
+        <td class="cell sm"  data-k="W4T1">-</td>
+        <td class="cell sn0" data-k="W4T2">0</td>
+        <td class="cell sm"  data-k="W4T3">-</td>
+        <td class="cell sn0" data-k="W4T4">0</td>
+      </tr>
+      <tr>
+        <td class="ih ih-w">W5 &mdash; Kennis persoonsafhankelijk</td>
+        <td class="cell sm"  data-k="W5O1">-</td>
+        <td class="cell sn0" data-k="W5O2">0</td>
+        <td class="cell sm"  data-k="W5O3">-</td>
+        <td class="cell sm"  data-k="W5O4">-</td>
+        <td class="cell smm" data-k="W5T1">--</td>
+        <td class="cell sm"  data-k="W5T2">-</td>
+        <td class="cell sm"  data-k="W5T3">-</td>
+        <td class="cell sn0" data-k="W5T4">0</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="detail" id="detail-box">
+    <span class="dh">Klik op een cel om de strategische implicatie te zien.</span>
+  </div>
+</div>
+
+<!-- ── SWOT-overzicht ────────────────────────────────────── -->
+<div id="view-swot" class="view">
+  <div class="swot-grid">
+    <div class="swot-card swot-s">
+      <span class="swot-label sl-s">Sterktes</span>
+      <div class="swot-item">
+        <div class="si-num">S1</div>
+        <div><div class="si-main">Rijke historische machinedata</div><div class="si-sub">Hoge kwaliteit data seit 2013 in eigen data warehouse &mdash; uniek in de markt</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">S2</div>
+        <div><div class="si-main">MCP-server operationeel</div><div class="si-sub">Technische brug tussen AI en data warehouse is gebouwd door Pim</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">S3</div>
+        <div><div class="si-main">Domeinkennis bij specialisten</div><div class="si-sub">Diepgaande machinebouwkennis die concurrenten niet kunnen repliceren</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">S4</div>
+        <div><div class="si-main">AI-specialist met werkende prototypes</div><div class="si-sub">Visie &eacute;n uitvoering voor AI-automatisering zitten bij dezelfde persoon</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">S5</div>
+        <div><div class="si-main">Extern bevestigde data-voorsprong</div><div class="si-sub">AM&rsquo;s bevestigen: Contiweb loopt voor op Marel, GEA en WP Haton</div></div>
+      </div>
+    </div>
+    <div class="swot-card swot-w">
+      <span class="swot-label sl-w">Zwaktes</span>
+      <div class="swot-item">
+        <div class="si-num">W1</div>
+        <div><div class="si-main">Data bereikt commerci&euml;le laag niet</div><div class="si-sub">Felipe&rsquo;s warehouse, Erwin&rsquo;s analyses en Pim&rsquo;s AI-output bereiken Denis en Sarah niet structureel</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">W2</div>
+        <div><div class="si-main">MPA-proces kost 30-35% AM-tijd</div><div class="si-sub">Handmatige copy-paste uit meerdere systemen &mdash; 80-90% is automatiseerbaar</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">W3</div>
+        <div><div class="si-main">Cultuurbarri&egrave;re rond AI-adoptie</div><div class="si-sub">AI-moeheid en wantrouwen in hallucinaties remmen uitrol van wat technisch al klaar is</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">W4</div>
+        <div><div class="si-main">SAP-datakwaliteit onvoldoende</div><div class="si-sub">Automatisering staat bewust n&aacute; datakwaliteitsverbetering geprioriteerd</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">W5</div>
+        <div><div class="si-main">Kennis persoonsafhankelijk</div><div class="si-sub">Diagnostische kennis zit bij twee specialisten &mdash; niet geborgd in systemen</div></div>
+      </div>
+    </div>
+    <div class="swot-card swot-o">
+      <span class="swot-label sl-o">Kansen</span>
+      <div class="swot-item">
+        <div class="si-num">O1</div>
+        <div><div class="si-main">Klanten eisen uptime-garantie</div><div class="si-sub">Marktshift van reactieve reparatie naar SSA-contracten met aantoonbare prestaties</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">O2</div>
+        <div><div class="si-main">CSRD / CBAM compliance-druk</div><div class="si-sub">Gasverbruiksdata is al beschikbaar &mdash; compliance als betaalde dienst is direct realiseerbaar</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">O3</div>
+        <div><div class="si-main">AI-tools en MCP beschikbaar</div><div class="si-sub">MCP-server maakt data bevraagbaar in natuurlijke taal &mdash; IWIKI, Open Points en warehouse</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">O4</div>
+        <div><div class="si-main">MPA-automatisering haalbaar</div><div class="si-sub">80-90% van MPA-data zit al in systemen &mdash; directe tijdswinst voor 8-9 AM&rsquo;s wereldwijd</div></div>
+      </div>
+    </div>
+    <div class="swot-card swot-t">
+      <span class="swot-label sl-t">Bedreigingen</span>
+      <div class="swot-item">
+        <div class="si-num">T1</div>
+        <div><div class="si-main">Concurrenten halen data-achterstand in</div><div class="si-sub">Tijdelijke voorsprong verdampt als Contiweb data-rijkdom niet commercieel verzilverd</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">T2</div>
+        <div><div class="si-main">Communicatiekloven frusteren klanten</div><div class="si-sub">Klanten ontdekken problemen terwijl Contiweb de data al had &mdash; reputatierisico</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">T3</div>
+        <div><div class="si-main">AI-hallucinaties ondermijnen vertrouwen</div><div class="si-sub">Onjuiste AI-output zonder domeinvalidatie kan klantrelaties beschadigen</div></div>
+      </div>
+      <div class="swot-item">
+        <div class="si-num">T4</div>
+        <div><div class="si-main">Interne cultuurweerstand blokkeert schaalbare uitrol</div><div class="si-sub">AI-moeheid binnen Contiweb vertraagt benutten van technische voorsprong die concurrenten al hebben</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Key Issues ────────────────────────────────────────── -->
+<div id="view-ki" class="view">
+  <div class="ki-list">
+    <div class="ki-row urg-c">
+      <div class="ki-left"><div class="ki-nr">KI 1</div><span class="urg uh">Kritiek</span></div>
+      <div class="ki-body">
+        <div class="ki-title">Dataketen breekt bij overgang technisch &rarr; commercieel</div>
+        <div class="ki-desc">W1 &times; O1&ndash;O4, T1&ndash;T2. De technische brug (MCP, warehouse) is gebouwd maar de organisatorische verbinding naar AM&rsquo;s en klanten ontbreekt. Dit is het meest urgente probleem en raakt alle deelvragen.</div>
+        <div class="ki-bar"><div class="ki-bf" style="width:100%;background:#DC3C3C"></div></div>
+        <div class="ki-dv">Stuurt deelvragen: E1 &middot; E2 &middot; A1 &middot; A2</div>
+      </div>
+    </div>
+    <div class="ki-row urg-c">
+      <div class="ki-left"><div class="ki-nr">KI 2</div><span class="urg uh">Kritiek</span></div>
+      <div class="ki-body">
+        <div class="ki-title">Technisch potentieel overstijgt organisatorische gereedheid</div>
+        <div class="ki-desc">S2+S4 &times; W3+W4. MCP en AI-prototypes zijn operationeel, maar SAP-datakwaliteit en cultuurweerstand blokkeren brede uitrol. De organisatie is nog niet klaar voor wat technisch al kan.</div>
+        <div class="ki-bar"><div class="ki-bf" style="width:88%;background:#DC3C3C"></div></div>
+        <div class="ki-dv">Stuurt deelvragen: T2 &middot; E2 &middot; A1</div>
+      </div>
+    </div>
+    <div class="ki-row urg-u">
+      <div class="ki-left"><div class="ki-nr">KI 3</div><span class="urg um">Urgent</span></div>
+      <div class="ki-body">
+        <div class="ki-title">AM-efficiency is de snelste route naar aantoonbare klantwaarde</div>
+        <div class="ki-desc">W2 &times; O4. Met 30-35% tijdsverlies per AM en 80-90% automatiseerbare MPA-data is dit de meest directe hefboom. Tijdswinst is berekensbaar en de business case schrijft zichzelf.</div>
+        <div class="ki-bar"><div class="ki-bf" style="width:80%;background:#F9BC5E"></div></div>
+        <div class="ki-dv">Stuurt deelvragen: A2 &middot; E2</div>
+      </div>
+    </div>
+    <div class="ki-row urg-u">
+      <div class="ki-left"><div class="ki-nr">KI 4</div><span class="urg um">Quick win</span></div>
+      <div class="ki-body">
+        <div class="ki-title">CSRD/CBAM compliance is direct realiseerbaar zonder nieuwe infrastructuur</div>
+        <div class="ki-desc">S1 &times; O2. Gasverbruiksdata per machine bestaat al in het warehouse en heeft hoge kwaliteit. Compliance-rapportage als betaalde dienst is los van SAP-problemen en cultuurweerstand realiseerbaar.</div>
+        <div class="ki-bar"><div class="ki-bf" style="width:65%;background:#F9BC5E"></div></div>
+        <div class="ki-dv">Stuurt deelvragen: A2 &middot; T1</div>
+      </div>
+    </div>
+    <div class="ki-row urg-s">
+      <div class="ki-left"><div class="ki-nr">KI 5</div><span class="urg ul">Strategisch</span></div>
+      <div class="ki-body">
+        <div class="ki-title">Data-voorsprong op concurrenten is tijdelijk &mdash; nu verzilveren</div>
+        <div class="ki-desc">S5 &times; T1+T4. AM&rsquo;s bevestigen dat Contiweb voorloopt op Marel, GEA en WP Haton. Dit voordeel verdampt zodra concurrenten inhalen. Snelheid van implementatie is daarmee een strategische randvoorwaarde.</div>
+        <div class="ki-bar"><div class="ki-bf" style="width:72%;background:#18A374"></div></div>
+        <div class="ki-dv">Stuurt deelvragen: A2 &middot; T1 versterkt</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const imp={
+  S1O1:{tag:'SO',type:'tag-so',t:'Historische data maakt uptime aantoonbaar',b:'Data vanaf 2013 maakt per machine aantoonbare uptimestatistieken mogelijk \u2014 directe onderbouwing voor hogere SSA-niveaus.'},
+  S1O2:{tag:'SO',type:'tag-so',t:'Energiedata klaar voor CSRD-compliance',b:'Gasverbruiksdata per machine is beschikbaar in het warehouse. CSRD-rapportages per klant zijn direct realiseerbaar.'},
+  S1O3:{tag:'SO',type:'tag-so',t:'Rijke data is de brandstof voor AI',b:'De MCP-server kan direct gebruik maken van de historische machinedata voor patroonanalyse en storingsdiagnose.'},
+  S1O4:{tag:'SO',type:'tag-so',t:'80-90% van MPA-data zit al in het systeem',b:'De historische data die AM\'s nu handmatig ophalen, is via MCP automatisch te genereren.'},
+  S1T1:{tag:'ST',type:'tag-st',t:'Data-voorsprong is extern bevestigd door AM\'s',b:'AM\'s bevestigen op basis van marktervaring dat Contiweb qua dataverzameling voorloopt op Marel, GEA en WP Haton.'},
+  S1T2:{tag:'ST',type:'tag-st',t:'Data alleen lost communicatiekloven niet op',b:'Data-beschikbaarheid beschermt niet tegen klantfrustratie zolang de keten naar klantcontact niet sluit.'},
+  S1T3:{tag:'ST',type:'tag-st',t:'Rijke data vermindert hallucinatierisico',b:'Goed gelabelde, consistente historische data geeft het AI-model betere context voor accurate diagnoses.'},
+  S1T4:{tag:'ST',type:'tag-st',t:'Beperkt relevant',b:'Data-rijkdom lost interne cultuurweerstand niet direct op.'},
+  S2O1:{tag:'SO',type:'tag-so',t:'MCP slaat technisch de brug naar klantwaarde',b:'Via de MCP-koppeling kunnen datasignalen direct worden omgezet naar klantgerichte acties \u2014 storingsdiagnose in 10 seconden is nu realiseerbaar.'},
+  S2O2:{tag:'SO',type:'tag-so',t:'MCP kan compliance-rapportages automatiseren',b:'Gasverbruiksdata in het warehouse is via MCP opvraagbaar voor geautomatiseerde CSRD-rapportages per klant.'},
+  S2O3:{tag:'SO',type:'tag-so',t:'MCP is de kern van de AI-infrastructuur',b:'De MCP-server maakt het mogelijk dat AI in natuurlijke taal het warehouse en de IWIKI bevraagt \u2014 dit is de technische randvoorwaarde voor alle AI-toepassingen.'},
+  S2O4:{tag:'SO',type:'tag-so',t:'MCP maakt MPA-automatisering direct haalbaar',b:'Het ophalen van machinedata voor de MPA kan via MCP worden geautomatiseerd. Dit is de directste route naar de 30-35% tijdswinst bij AM\'s.'},
+  S2T1:{tag:'ST',type:'tag-st',t:'MCP + warehouse is moeilijk te repliceren',b:'De combinatie van rijke historische data \u00e9n werkende MCP-infrastructuur geeft Contiweb een technische voorsprong die concurrenten niet snel kopi\u00ebren.'},
+  S2T2:{tag:'ST',type:'tag-st',t:'MCP kan communicatiekloven structureel dichten',b:'AI-agents via MCP kunnen proactief klantrelevante signalen detecteren en doorsturen naar AM\'s v\u00f3\u00f3rdat de klant zelf contact opneemt.'},
+  S2T3:{tag:'ST',type:'tag-st',t:'MCP vereist strakke werkinstructies voor betrouwbaarheid',b:'Pim benadrukt dat AI via de backend strakke context en regels nodig heeft. Dit is een technische randvoorwaarde, geen onoverkomelijk probleem.'},
+  S2T4:{tag:'ST',type:'tag-st',t:'Beperkt relevant',b:'De MCP-infrastructuur staat los van interne cultuurweerstand.'},
+  S3O1:{tag:'SO',type:'tag-so',t:'Domeinkennis onderbouwt uptime-propositie',b:'Specialisten weten welke machinesignalen correleren met storingen. Dit is de input voor betrouwbare AI-diagnoses.'},
+  S3O2:{tag:'SO',type:'tag-so',t:'Beperkt relevant',b:'Domeinkennis draagt indirect bij via interpretatie van energieafwijkingen.'},
+  S3O3:{tag:'SO',type:'tag-so',t:'Domeinkennis is input voor feature engineering',b:'Specialisten zijn onmisbaar bij het trainen en valideren van AI-modellen op machinedata.'},
+  S3O4:{tag:'SO',type:'tag-so',t:'Domeinkennis bepaalt welke data de MPA verrijkt',b:'Specialisten weten welke signalen relevant zijn voor klantadvies \u2014 dit stuurt de automatisering van de MPA.'},
+  S3T1:{tag:'ST',type:'tag-st',t:'Machinebouwkennis is niet te repliceren door concurrenten',b:'Generieke AI-tools missen de context om storingen correct te duiden. De domeinkennis van specialisten is Contiweb\u2019s sterkste differentiator.'},
+  S3T2:{tag:'ST',type:'tag-st',t:'Experts kunnen proactief communiceren',b:'Technische experts kunnen klantrelevante patronen signaleren v\u00f3\u00f3rdat de klant zelf het probleem ontdekt.'},
+  S3T3:{tag:'ST',type:'tag-st',t:'Domeinkennis is het sterkste wapen tegen hallucinaties',b:'Specialists kunnen AI-output toetsen aan werkelijke machinekennis \u2014 hun rol in de AI-workflow wordt hiermee waardevoller.'},
+  S3T4:{tag:'ST',type:'tag-st',t:'Specialisten kunnen AI-adoptie versnellen',b:'Als vertrouwde experts AI-tools actief aanbevelen en gebruiken, verlaagt dit de drempel voor andere medewerkers.'},
+  S4O1:{tag:'SO',type:'tag-so',t:'Werkende prototypes versnellen de weg naar uptime-propositie',b:'Pim\u2019s bestaande agents tonen aan dat de technische lat voor aftermarket-toepassingen lager ligt dan verwacht.'},
+  S4O2:{tag:'SO',type:'tag-so',t:'AI-specialist kan compliance-automatisering snel inrichten',b:'Met bestaande kennis van AI-agents kan Pim CSRD-rapportageprocessen relatief snel operationaliseren.'},
+  S4O3:{tag:'SO',type:'tag-so',t:'Visie en uitvoering zitten bij dezelfde persoon',b:'Pim combineert strategische AI-visie met concrete technische uitvoering \u2014 dit is een zeldzame combinatie die de transitie aanzienlijk versnelt.'},
+  S4O4:{tag:'SO',type:'tag-so',t:'Pim\u2019s agentarchitectuur is direct toepasbaar op MPA-automatisering',b:'De al gebouwde agents voor rapportages en CRM-analyse zijn directe proof-of-concept voor MPA-automatisering.'},
+  S4T1:{tag:'ST',type:'tag-st',t:'Concrete AI-capaciteit onderscheidt Contiweb van concurrenten',b:'Werkende AI-infrastructuur is een tastbaar voordeel dat concurrenten zonder vergelijkbare specialist niet snel evenaren.'},
+  S4T2:{tag:'ST',type:'tag-st',t:'AI-agents kunnen proactieve communicatie automatiseren',b:'Pim\u2019s visie dat AI voor jou werkt past direct op het communicatieprobleem: geautomatiseerde alerts v\u00f3\u00f3rdat klanten bellen.'},
+  S4T3:{tag:'ST',type:'tag-st',t:'Pim begrijpt hallucinatierisico en adresseert het actief',b:'Zijn aanpak via backend-API met strakke context en werkinstructies is de wetenschappelijk onderbouwde methode voor betrouwbare AI-output.'},
+  S4T4:{tag:'ST',type:'tag-st',t:'AI-specialist kan cultuurweerstand van binnenuit adresseren',b:'Pim\u2019s concrete prototypes en toegankelijke visie kunnen de drempel voor medewerkers verlagen beter dan abstracte AI-presentaties.'},
+  S5O1:{tag:'SO',type:'tag-so',t:'Data-voorsprong maakt uptime-propositie geloofwaardig',b:'Extern bevestigde data-rijkdom geeft klanten vertrouwen dat Contiweb de belofte van hogere uptime waar kan maken.'},
+  S5O2:{tag:'SO',type:'tag-so',t:'Data-voorsprong maakt compliance-dienst geloofwaardig',b:'Klanten vertrouwen dat Contiweb de juiste partner is voor energie- en emissiedata op basis van de bewezen datakwaliteit.'},
+  S5O3:{tag:'SO',type:'tag-so',t:'Rijkste dataset levert sterkste AI-output',b:'Meer en betere historische data leidt tot betrouwbaardere AI-antwoorden. Contiweb\u2019s data-voorsprong is daarmee direct een voorsprong in AI-kwaliteit.'},
+  S5O4:{tag:'SO',type:'tag-so',t:'Data-rijkdom maakt MPA-automatisering volledig',b:'Hoe meer historische machinedata beschikbaar is, hoe rijker en persoonlijker de geautomatiseerde MPA per klant kan zijn.'},
+  S5T1:{tag:'ST',type:'tag-st',t:'Data-voorsprong is tijdelijk als hij niet verzilverd wordt',b:'AM\u2019s bevestigen: concurrenten lopen achter. Maar dit voordeel is niet permanent. Snelheid van implementatie is een strategische randvoorwaarde.'},
+  S5T2:{tag:'ST',type:'tag-st',t:'Beperkt relevant',b:'Data-rijkdom beschermt niet direct tegen communicatiekloven.'},
+  S5T3:{tag:'ST',type:'tag-st',t:'Meer data vermindert AI-hallucinatierisico',b:'Rijke, gecontextualiseerde datasets geven AI-modellen een betere grondslag voor accurate antwoorden.'},
+  S5T4:{tag:'ST',type:'tag-st',t:'Data-voorsprong kan cultuurweerstand doorbreken',b:'Concreet bewijs dat Contiweb\u2019s data uniek is, kan intern draagvlak cre\u00ebren voor AI-investeringen.'},
+  W1O1:{tag:'WO',type:'tag-wo',t:'Uptime-data bereikt Denis en andere AM\u2019s niet',b:'Contiweb heeft de data om uptime proactief aan te tonen, maar AM\u2019s ontvangen geen bruikbare signalen. De kans blijft onbenut.'},
+  W1O2:{tag:'WO',type:'tag-wo',t:'Silo-structuur maakt compliance niet schaalbaar',b:'CSRD-rapportages vereisen een gestroomlijnde dataflow van machine naar klantrapport. De huidige silo-structuur maakt dit handmatig en niet schaalbaar.'},
+  W1O3:{tag:'WO',type:'tag-wo',t:'AI-inzichten bereiken de klant niet',b:'Zelfs als MCP waardevolle inzichten genereert, heeft dit geen effect als de output niet bij AM\u2019s of klanten terechtkomt.'},
+  W1O4:{tag:'WO',type:'tag-wo',t:'Automatisering helpt niet als output de verkeerde kant opgaat',b:'Geautomatiseerde MPA\u2019s zijn waardeloos als ze niet bij de AM terechtkomen in een bruikbaar formaat.'},
+  W1T1:{tag:'WT',type:'tag-wt',t:'Concurrenten leveren de propositie die Contiweb nog niet levert',b:'Concurrenten die data w\u00e9l vertalen naar klantdiensten winnen klanten die uptime en inzicht verwachten.'},
+  W1T2:{tag:'WT',type:'tag-wt',t:'Klanten frusteren terwijl Contiweb de data al had',b:'Dit is het meest directe reputatierisico van de huidige situatie. Klanten ontdekken problemen die Contiweb al kende.'},
+  W1T3:{tag:'WT',type:'tag-wt',t:'Niet relevant',b:'De toegangskloof naar AM\u2019s staat los van het AI-hallucinatierisico.'},
+  W1T4:{tag:'WT',type:'tag-wt',t:'Niet relevant',b:'De dataketen-kloof staat los van interne cultuurweerstand.'},
+  W2O1:{tag:'WO',type:'tag-wo',t:'30-35% tijdsverlies beperkt uptime-propositie actief uitdragen',b:'AM\u2019s die te druk zijn met MPA\u2019s besteden minder tijd aan relatieopbouw bij klanten die nog geen budget hebben. Dit remt de propositie.'},
+  W2O2:{tag:'WO',type:'tag-wo',t:'Handmatige processen voldoen niet aan compliance-eisen',b:'CSRD-rapportages vereisen auditeerbare, geautomatiseerde dataflows. Excel-processen zijn niet certificeerbaar.'},
+  W2O3:{tag:'WO',type:'tag-wo',t:'Administratieve last laat geen ruimte voor AI-adoptie',b:'AM\u2019s die 30-35% van hun tijd kwijt zijn aan administratie hebben weinig capaciteit om nieuwe AI-werkwijzen te leren.'},
+  W2O4:{tag:'SO',type:'tag-so',t:'MPA-automatisering is de directste quick win',b:'80-90% van de MPA-data zit al in systemen. Dit is precies de taak waarvoor de MCP-architectuur is gebouwd. Business case is direct berekensbaar.'},
+  W2T1:{tag:'WT',type:'tag-wt',t:'Handmatige rapportage verliest op snelheid van concurrenten',b:'Concurrenten met geautomatiseerde rapportageprocessen kunnen sneller en frequenter klantrapportages leveren.'},
+  W2T2:{tag:'WT',type:'tag-wt',t:'Zeldzame rapportages worden als gebrek aan betrokkenheid ervaren',b:'Vertraagde en zeldzame MPA\u2019s vergroten de perceptie van communicatiekloven bij klanten.'},
+  W2T3:{tag:'WT',type:'tag-wt',t:'Niet relevant',b:'Het handmatige MPA-proces staat los van het AI-hallucinatierisico.'},
+  W2T4:{tag:'WT',type:'tag-wt',t:'Niet relevant',b:'Het MPA-proces staat los van interne cultuurweerstand in bredere zin.'},
+  W3O1:{tag:'WO',type:'tag-wo',t:'Cultuurweerstand vertraagt realisatie uptime-propositie',b:'Medewerkers die AI eng vinden dragen de datagedreven propositie niet actief uit naar klanten.'},
+  W3O2:{tag:'WO',type:'tag-wo',t:'Beperkt relevant',b:'Cultuurbarri\u00e8re heeft weinig directe invloed op CSRD-compliance processen.'},
+  W3O3:{tag:'WO',type:'tag-wo',t:'AI-moeheid blokkeert benutten van MCP en tools',b:'De beschikbare AI-tools worden niet breed ingezet omdat er te weinig draagvlak en tijd is voor implementatie.'},
+  W3O4:{tag:'WO',type:'tag-wo',t:'Adoptieweerstand blokkeert MPA-automatisering',b:'MPA-automatisering via AI is technisch mogelijk maar waardeloos als AM\u2019s het niet vertrouwen of niet gebruiken.'},
+  W3T1:{tag:'WT',type:'tag-wt',t:'Langzame adoptie vergroot concurrentienadeel',b:'Concurrenten zonder cultuurweerstand schalen AI-diensten sneller. De tijdelijke data-voorsprong verdampt.'},
+  W3T2:{tag:'WT',type:'tag-wt',t:'Wantrouwen in AI vertraagt klantcommunicatie',b:'Medewerkers die AI-output wantrouwen, verifi\u00ebren handmatig of gebruiken het niet, wat het communicatieprobleem in stand houdt.'},
+  W3T3:{tag:'WT',type:'tag-wt',t:'Cultuurweerstand \u00e9n hallucinaties versterken elkaar',b:'Medewerkers die AI wantrouwen \u00e9n slechte ervaringen hebben met foutieve output, zullen adoptie verder vertragen. Gevaarlijkste combinatie.'},
+  W3T4:{tag:'WT',type:'tag-wt',t:'Interne weerstand is onderdeel van dezelfde cultuurbedreiging',b:'W3 en T4 zijn twee kanten van hetzelfde probleem: interne en externe cultuurweerstand versterken elkaar.'},
+  W4O1:{tag:'WO',type:'tag-wo',t:'Slechte SAP-data ondermijnt betrouwbaarheid AI-diagnoses',b:'Incorrecte machineconfiguaties in SAP geven onjuiste context aan AI-gestuurde diagnoses en upgrade-adviezen.'},
+  W4O2:{tag:'WO',type:'tag-wo',t:'SAP-dataproblemen bemoeilijken CSRD-certificering',b:'Compliance-rapportages moeten auditeerbaar zijn. Schone, traceerbare brondata is een formele vereiste die nu nog niet gegarandeerd is.'},
+  W4O3:{tag:'WO',type:'tag-wo',t:'Automatisering staat geprioriteerd n\u00e1 datakwaliteitsverbetering',b:'Pim en Felipe bevestigen: AI-automatisering zonder schone brondata levert onbetrouwbare output. Dit is de DV1-norm in de praktijk.'},
+  W4O4:{tag:'WO',type:'tag-wo',t:'Slechte SAP-data limiteert kwaliteit van geautomatiseerde MPA\u2019s',b:'Als transactionele data over machineconfiguaties incorrect is, bevat de geautomatiseerde MPA fouten die het vertrouwen van AM\u2019s ondermijnen.'},
+  W4T1:{tag:'WT',type:'tag-wt',t:'Datakwaliteitsachterstand vertraagt concurrentiepositie',b:'Zolang SAP-data niet op orde is, kan Contiweb geen schaalbare AI-diensten lanceren terwijl concurrenten dit mogelijk al wel doen.'},
+  W4T2:{tag:'WT',type:'tag-wt',t:'Niet relevant',b:'SAP-datakwaliteit heeft geen directe invloed op communicatiekloven naar klanten.'},
+  W4T3:{tag:'WT',type:'tag-wt',t:'Slechte brondata is de grootste oorzaak van hallucinaties',b:'AI hallucineert vaker bij inconsistente, onvolledige data. W4 vergroot T3 structureel.'},
+  W4T4:{tag:'WT',type:'tag-wt',t:'Niet relevant',b:'SAP-datakwaliteit staat los van interne cultuurweerstand.'},
+  W5O1:{tag:'WO',type:'tag-wo',t:'Kennisconcentratie beperkt schaalbaarheid uptime-garanties',b:'Schaalbaar uptime-garanties aanbieden vereist gestructureerde kennis in systemen, niet in hoofden van twee specialisten.'},
+  W5O2:{tag:'WO',type:'tag-wo',t:'Beperkt relevant',b:'Persoonsafhankelijke kennis heeft geen directe relatie met CSRD-compliance.'},
+  W5O3:{tag:'WO',type:'tag-wo',t:'AI kan domeinkennis niet benutten als het niet geborgd is',b:'Erwin\u2019s diagnostische logica is onzichtbaar voor elk AI-systeem zolang het niet is vastgelegd in data of documentatie.'},
+  W5O4:{tag:'WO',type:'tag-wo',t:'Ongeborgde kennis limiteert kwaliteit van geautomatiseerde MPA\u2019s',b:'Als specialistenkennis over upgrade-relevantie niet geborgd is, mist de geautomatiseerde MPA cruciale adviescontent.'},
+  W5T1:{tag:'WT',type:'tag-wt',t:'Kennisconcentratie is kwetsbaar bij personeelsverloop',b:'Concurrenten die kennis systematisch borgen in systemen kunnen diensten schalen. Bij Contiweb is die kennis niet overdraagbaar.'},
+  W5T2:{tag:'WT',type:'tag-wt',t:'Continuit\u00ebitsrisico als specialist niet beschikbaar is',b:'Als de specialist die een storingspatroon kent niet beschikbaar is, vertraagt de respons en neemt klantfrustatie toe.'},
+  W5T3:{tag:'WT',type:'tag-wt',t:'Ongeborgde kennis vergroot structureel hallucinatierisico',b:'Zonder ge\u00ebxternaliseerde domeinkennis als validatiemechanisme is er geen structurele check op onjuiste AI-output.'},
+  W5T4:{tag:'WT',type:'tag-wt',t:'Beperkt relevant',b:'Persoonsafhankelijke kennis staat los van interne cultuurweerstand.'}
+};
+
+function sw(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+function setFilter(cls, btn){
+  document.querySelectorAll('.flt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  var tbl = document.getElementById('matrix-tbl');
+  tbl.classList.remove('filter-spp','filter-smm');
+  if(cls !== 'all') tbl.classList.add('filter-'+cls);
+}
+
+document.querySelectorAll('.cell').forEach(c=>{
+  var row = c.closest('tr');
+  var tbl = document.getElementById('matrix-tbl');
+
+  // Click: show implication + pulse + slide-in
+  c.addEventListener('click', function(){
+    const d = imp[this.dataset.k];
+    if(!d) return;
+    document.querySelectorAll('.cell').forEach(x=>x.classList.remove('sel','pulse'));
+    this.classList.add('sel');
+    void this.offsetWidth;
+    this.classList.add('pulse');
+    const box = document.getElementById('detail-box');
+    if(!box) return;
+    box.innerHTML = `<div class="dtag ${d.type}">${d.tag} \u2014 ${this.dataset.k.replace(/([SW]\d)([OT]\d)/,'$1 \u00d7 $2')}</div><div class="dt">${d.t}</div><div class="db">${d.b}</div>`;
+    box.classList.remove('revealed');
+    void box.offsetWidth;
+    box.classList.add('revealed');
+  });
+
+  // Hover: highlight row header + column header
+  c.addEventListener('mouseenter', function(){
+    var colIdx = Array.from(this.closest('tr').cells).indexOf(this);
+    this.closest('tr').cells[0].classList.add('row-hl');
+    var headRow = tbl.querySelector('thead tr');
+    if(headRow && headRow.cells[colIdx]) headRow.cells[colIdx].classList.add('col-hl');
+  });
+
+  c.addEventListener('mouseleave', function(){
+    document.querySelectorAll('.row-hl,.col-hl').forEach(el=>el.classList.remove('row-hl','col-hl'));
+  });
+});
+</script>
+
+</div>
+</body>
+</html>
